@@ -171,54 +171,53 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
     Retention Rate (%)
 65.58
 
-### 📊 **3 Customer Lifetime Value (LTV) Analysis**
+### 📊 **Customer Lifetime Value (LTV)**
+## 📌 What is LTV?
+Customer Lifetime Value (LTV) represents the total revenue a business expects to earn from a customer during their entire relationship. It helps businesses understand which customers are the most valuable and guides strategies for retention, marketing, and personalized offers.
 
-#### 📌 What is LTV?
-**Customer Lifetime Value (LTV)** represents the **total revenue** a business expects to earn from a customer during their entire relationship. It helps businesses understand **which customers are the most valuable** and guides strategies for retention, marketing, and personalized offers.
+### 📌 LTV Formula:
+\[ LTV = \text{Avg Order Value} \times \text{Total Purchases} \times \text{Customer Lifespan} \]
 
-#### 📌 LTV Formula:
-\[
-LTV = \text{Avg Order Value} \times \text{Total Purchases} \times \text{Customer Lifespan}
-\]
 Where:
-- **Avg Order Value** = Total Revenue / Total Purchases  
-- **Total Purchases** = Number of distinct invoices per customer  
-- **Customer Lifespan** = The number of years a customer has been active  
-#### 📌 Query:
+- **Avg Order Value** = Total Revenue / Total Purchases
+- **Total Purchases** = Number of distinct invoices per customer
+- **Customer Lifespan** = The number of years a customer has been active
+
+### 📌 Query:
 ```sql
-    WITH customer_lifespan AS (
-        SELECT
-            CustomerID,
-            MIN(InvoiceDate) AS FirstPurchaseDate,
-            MAX(InvoiceDate) AS LastPurchaseDate,
-            ROUND(EXTRACT(EPOCH FROM (MAX(InvoiceDate) - MIN(InvoiceDate))) / (365.25 * 86400), 2) AS CustomerLifespanYears
-        FROM online_retail
-        GROUP BY CustomerID
-    ),
-    
-    customer_revenue AS (
-        SELECT
-            CustomerID,
-            COUNT(DISTINCT Invoice) AS TotalPurchases,
-            ROUND(SUM(quantity * price),2) AS TotalRevenue,
-            ROUND(AVG(quantity * price),2) AS AvgOrderValue
-        FROM online_retail
-        GROUP BY CustomerID
-        HAVING COUNT(DISTINCT Invoice) > 5  
-    )
-    
+WITH customer_lifespan AS (
     SELECT
-        cr.CustomerID,
-        cr.TotalPurchases,
-        cr.TotalRevenue,
-        cr.AvgOrderValue,
-        cl.CustomerLifespanYears,
-        ROUND((cr.AvgOrderValue * cr.TotalPurchases * cl.CustomerLifespanYears), 2) AS LTV
-    FROM customer_revenue cr
-    JOIN customer_lifespan cl ON cr.CustomerID = cl.CustomerID
-    ORDER BY LTV DESC
-    LIMIT 10;
-    
+        CustomerID,
+        MIN(InvoiceDate) AS FirstPurchaseDate,
+        MAX(InvoiceDate) AS LastPurchaseDate,
+        ROUND(EXTRACT(EPOCH FROM (MAX(InvoiceDate) - MIN(InvoiceDate))) / (365.25 * 86400), 2) AS CustomerLifespanYears
+    FROM online_retail
+    GROUP BY CustomerID
+),
+
+customer_revenue AS (
+    SELECT
+        CustomerID,
+        COUNT(DISTINCT Invoice) AS TotalPurchases,
+        ROUND(SUM(quantity * price),2) AS TotalRevenue,
+        ROUND(AVG(quantity * price),2) AS AvgOrderValue
+    FROM online_retail
+    GROUP BY CustomerID
+    HAVING COUNT(DISTINCT Invoice) > 5  
+)
+
+SELECT
+    cr.CustomerID,
+    cr.TotalPurchases,
+    cr.TotalRevenue,
+    cr.AvgOrderValue,
+    cl.CustomerLifespanYears,
+    ROUND((cr.AvgOrderValue * cr.TotalPurchases * cl.CustomerLifespanYears), 2) AS LTV
+FROM customer_revenue cr
+JOIN customer_lifespan cl ON cr.CustomerID = cl.CustomerID
+ORDER BY LTV DESC
+LIMIT 10;
+```
 
 ### 📊 **Top 10 Customers by Lifetime Value (LTV)**
 
@@ -234,6 +233,12 @@ Where:
 | 17857      | 23             | 26,879.04       | 497.76          | 0.83                  | 9,502.24  |
 | 14646      | 73             | 280,206.02      | 134.97          | 0.94                  | 9,261.64  |
 | 12931      | 15             | 42,055.96       | 512.88          | 0.84                  | 6,462.29  |
+
+---
+
+## **Authors**
+- [@PatelVaishvikk](https://github.com/PatelVaishvikk)
+
 
 
 
@@ -253,8 +258,8 @@ Where:
     FROM last_purchase;
 
 
-Churn Rate (%)
-22.75
+**Churn Rate (%)**
+**22.75**
 
 ### **2.7 Average Revenue Per User (ARPU)**
 
@@ -273,8 +278,8 @@ ARPU = Total Revenue / Total Customers
     FROM online_retail;
 
 
-ARPU ($)
-2048.69
+**ARPU ($)**
+**2048.69**
 
 ### **2.8 Repeat Purchase Rate (Customer Loyalty)**
 
@@ -302,8 +307,8 @@ Repeat Purchase Rate =   (Customers with >1 purchase) * 100/ Total Custome
         ) AS RepeatPurchaseRate
     FROM purchase_counts;
 
-Repeat Purchase Rate (%)
-65.00
+**Repeat Purchase Rate (%)**
+**65.00**
 
 ## Authors
 
