@@ -1,6 +1,9 @@
 📊 Customer Relationship Management (CRM) Analysis
 ==================================================
 
+![CRM Analysis](images/animation.gif)
+
+
 📌 Overview
 -----------
 
@@ -70,7 +73,22 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
     SELECT CustomerID, SUM(quantity * price) AS MonetaryValue
     FROM online_retail
     GROUP BY CustomerID;
-    
+
+
+   ### 📊 **Top 10 Customers by Total Spending**
+| CustomerID | Monetary Value |
+|------------|---------------|
+| 14646      | 280,206.02    |
+| 18102      | 259,657.30    |
+| 17450      | 194,390.79    |
+| 16446      | 168,472.50    |
+| 14911      | 143,711.17    |
+| 12415      | 124,914.53    |
+| 14156      | 117,210.08    |
+| 17511      | 91,062.38     |
+| 16029      | 80,850.84     |
+| 12346      | 77,183.60     |
+ 
 
 ### **2.2 RFM Analysis (Customer Segmentation)**
 
@@ -90,7 +108,24 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
         MonetaryValue
     FROM rfm
     ORDER BY Recency ASC;
-    
+
+
+    ### 📊 **RFM Analysis (Customer Segmentation)**
+
+#### 📊 **Result:**
+| CustomerID | Recency (Days) | Frequency | Monetary Value ($) |
+|------------|--------------|-----------|---------------------|
+| 14085      | 49           | 18        | 4,421.29           |
+| 14911      | 49           | 201       | 143,711.17         |
+| 13165      | 49           | 2         | 1,021.48           |
+| 13777      | 49           | 33        | 25,977.16          |
+| 13817      | 49           | 2         | 382.98             |
+| 13922      | 49           | 1         | 172.25             |
+| 12585      | 49           | 2         | 2,040.10           |
+| 12748      | 49           | 209       | 33,053.19          |
+| 13304      | 49           | 1         | 300.42             |
+| 15235      | 49           | 12        | 2,247.51           |
+
 
 ### **2.3 Top 10 Highest-Spending Customers**
 
@@ -102,6 +137,23 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
     ORDER BY TotalSpent DESC
     LIMIT 10;
     
+### 📊 **Top 10 Highest-Spending Customers**
+
+#### 📊 **Result:**
+| CustomerID | Total Spent ($) |
+|------------|---------------|
+| 14646      | 280,206.02    |
+| 18102      | 259,657.30    |
+| 17450      | 194,390.79    |
+| 16446      | 168,472.50    |
+| 14911      | 143,711.17    |
+| 12415      | 124,914.53    |
+| 14156      | 117,210.08    |
+| 17511      | 91,062.38     |
+| 16029      | 80,850.84     |
+| 12346      | 77,183.60     |
+
+
 
 ### **2.4 Customer Retention Rate**
 
@@ -115,10 +167,25 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
     SELECT
         ROUND(COUNT(CASE WHEN TotalPurchases > 1 THEN CustomerID END) * 100.0 / COUNT(*),2) AS RetentionRate
     FROM RepeatCustomers;
-    
 
-### **2.5 Customer Lifetime Value (LTV)**
+    Retention Rate (%)
+65.58
 
+### 📊 **3 Customer Lifetime Value (LTV) Analysis**
+
+#### 📌 What is LTV?
+**Customer Lifetime Value (LTV)** represents the **total revenue** a business expects to earn from a customer during their entire relationship. It helps businesses understand **which customers are the most valuable** and guides strategies for retention, marketing, and personalized offers.
+
+#### 📌 LTV Formula:
+\[
+LTV = \text{Avg Order Value} \times \text{Total Purchases} \times \text{Customer Lifespan}
+\]
+Where:
+- **Avg Order Value** = Total Revenue / Total Purchases  
+- **Total Purchases** = Number of distinct invoices per customer  
+- **Customer Lifespan** = The number of years a customer has been active  
+#### 📌 Query:
+```sql
     WITH customer_lifespan AS (
         SELECT
             CustomerID,
@@ -153,6 +220,23 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
     LIMIT 10;
     
 
+### 📊 **Top 10 Customers by Lifetime Value (LTV)**
+
+| CustomerID | Total Purchases | Total Revenue ($) | Avg Order Value ($) | Customer Lifespan (Years) | LTV ($) |
+|------------|----------------|------------------|------------------|-----------------------|----------|
+| 17949      | 45             | 58,510.48       | 835.86          | 0.92                  | 34,604.60 |
+| 18102      | 60             | 259,657.30      | 602.45          | 0.84                  | 30,363.48 |
+| 17450      | 46             | 194,390.79      | 578.54          | 0.91                  | 24,217.68 |
+| 16029      | 63             | 80,850.84       | 335.48          | 0.96                  | 20,289.83 |
+| 16013      | 47             | 37,130.60       | 267.13          | 0.94                  | 11,801.80 |
+| 16333      | 22             | 26,626.80       | 591.71          | 0.83                  | 10,804.62 |
+| 15769      | 26             | 56,252.72       | 432.71          | 0.91                  | 10,237.92 |
+| 17857      | 23             | 26,879.04       | 497.76          | 0.83                  | 9,502.24  |
+| 14646      | 73             | 280,206.02      | 134.97          | 0.94                  | 9,261.64  |
+| 12931      | 15             | 42,055.96       | 512.88          | 0.84                  | 6,462.29  |
+
+
+
 ### **2.6 Customer Churn Rate**
 
     WITH last_purchase AS (
@@ -167,16 +251,43 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
             COUNT(CASE WHEN EXTRACT(DAY FROM (CURRENT_TIMESTAMP - LastPurchaseDate)) > 180 THEN CustomerID END) * 100.0 / COUNT(CustomerID), 2
         ) AS ChurnRate
     FROM last_purchase;
-    
+
+
+Churn Rate (%)
+22.75
 
 ### **2.7 Average Revenue Per User (ARPU)**
+
+📌 What is ARPU?
+Average Revenue Per User (ARPU) measures the average revenue generated per customer over a given period.
+It is calculated using the formula:
+
+ARPU = Total Revenue / Total Customers
+ 
+✅ Helps businesses understand revenue efficiency per customer.
+✅ Useful for benchmarking customer profitability & growth.
+✅ Higher ARPU means customers are spending more, leading to better revenue.
 
     SELECT
         ROUND(SUM(quantity * price) / COUNT(DISTINCT CustomerID), 2) AS ARPU
     FROM online_retail;
-    
+
+
+ARPU ($)
+2048.69
 
 ### **2.8 Repeat Purchase Rate (Customer Loyalty)**
+
+
+📌 What is Repeat Purchase Rate?
+Repeat Purchase Rate measures the percentage of customers who made more than one purchase.
+It is calculated as:
+
+Repeat Purchase Rate =   (Customers with >1 purchase) * 100/ Total Customers
+
+✅ Indicates customer loyalty & engagement.
+✅ A higher repeat purchase rate means strong customer retention.
+✅ A 65% rate suggests that most customers return for additional purchases.
 
     WITH purchase_counts AS (
         SELECT
@@ -190,3 +301,10 @@ This project provides SQL-based CRM analytics using PostgreSQL. The dataset cont
             COUNT(CASE WHEN PurchaseCount > 1 THEN CustomerID END) * 100.0 / COUNT(DISTINCT CustomerID), 2
         ) AS RepeatPurchaseRate
     FROM purchase_counts;
+
+Repeat Purchase Rate (%)
+65.00
+
+## Authors
+
+- [@octokatherine](https://github.com/PatelVaishvikk)
