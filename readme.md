@@ -236,11 +236,6 @@ LIMIT 10;
 
 ---
 
-## **Authors**
-- [@PatelVaishvikk](https://github.com/PatelVaishvikk)
-
-
-
 
 ### **2.6 Customer Churn Rate**
 
@@ -310,6 +305,7 @@ Repeat Purchase Rate =   (Customers with >1 purchase) * 100/ Total Custome
 **Repeat Purchase Rate (%)**
 **65.00**
 
-## Authors
+## **Authors**
+- [@PatelVaishvikk](https://github.com/PatelVaishvikk)
 
-- [@octokatherine](https://github.com/PatelVaishvikk) give me this proper in .md language please make it proper
+
