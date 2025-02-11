@@ -9,21 +9,28 @@
 
 This project provides SQL-based CRM analytics using PostgreSQL. The dataset contains transactional data, including invoices, customer IDs, product details, and timestamps. Key metrics analyzed include Customer Lifetime Value (LTV), RFM segmentation, Customer Retention Rate, and Churn Rate.
 
-🗂️ Table of Contents
----------------------
 
-*   [1 Data Preparation]
-*   [2 CRM Analysis]
-    *   [2.1 Total Spending by Each Customer]
-    *   [2.2 RFM Analysis]
-    *   [2.3 Top 10 Highest-Spending Customers]
-    *   [2.4 Customer Retention Rate]
-    *   [2.5 Customer Lifetime Value (LTV)]
-    *   [2.6 Customer Churn Rate]
-    *   [2.7 Average Revenue Per User (ARPU)]
-    *   [2.8 Repeat Purchase Rate]
+## 🗂️ Table of Contents
+- [📌 Overview](#-overview)
+- [🗂️ Table of Contents](#-table-of-contents)
+- [1️⃣ Data Preparation](#1️⃣-data-preparation)
+  - [📌 Create Table](#-create-table)
+  - [📌 Load Data](#-load-data)
+  - [📌 Data Cleaning](#-data-cleaning)
+  - [📌 Indexing for Faster Queries](#-indexing-for-faster-queries)
+- [2️⃣ CRM Analysis](#2️⃣-crm-analysis)
+  - [2.1 Total Spending by Each Customer](#21-total-spending-by-each-customer)
+  - [2.2 RFM Analysis (Customer Segmentation)](#22-rfm-analysis-customer-segmentation)
+  - [2.3 Top 10 Highest-Spending Customers](#23-top-10-highest-spending-customers)
+  - [2.4 Customer Retention Rate](#24-customer-retention-rate)
+  - [2.5 Customer Lifetime Value (LTV)](#25-customer-lifetime-value-ltv)
+  - [2.6 Customer Churn Rate](#26-customer-churn-rate)
+  - [2.7 Average Revenue Per User (ARPU)](#27-average-revenue-per-user-arpu)
+  - [2.8 Repeat Purchase Rate (Customer Loyalty)](#28-repeat-purchase-rate-customer-loyalty)
+- [**Authors**](#authors)
 
-* * *
+---
+
 
 1️⃣ Data Preparation
 --------------------
